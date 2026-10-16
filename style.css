@@ -104,3 +104,30 @@
 .gate-ball-two{width:560px;height:560px;right:-365px;top:-300px}
 @media(max-width:440px){.birthday-gate{padding:15px}.gate-card{padding:25px 17px;border-radius:19px}.gate-mark{margin-bottom:22px}.gate-countdown{gap:5px;margin-top:29px}.gate-time-box{width:clamp(57px,16vw,70px);height:78px;border-radius:10px}.gate-time-box span{font-size:7px;letter-spacing:.1em}.gate-colon{font-size:20px}.gate-date{font-size:8px;letter-spacing:.11em}.gate-footer{font-size:7px;letter-spacing:.1em}}
 @media(prefers-reduced-motion:reduce){.gate-progress-track span{animation:none}}
+
+
+/* Foto 07: desloca o recorte para cima para manter o rosto do Wal visível. */
+.gallery-card.gallery-face img,
+.gallery-card.gallery-face:hover img,
+.gallery-card.gallery-face:focus-visible img {
+  object-position: 50% 8%;
+  transform: scale(1);
+  transform-origin: center top;
+}
+.gallery-card.gallery-face:hover img,
+.gallery-card.gallery-face:focus-visible img {
+  transform: scale(1.04);
+}
+@media (max-width: 720px) {
+  .gallery-card.gallery-face img,
+  .gallery-card.gallery-face:hover img,
+  .gallery-card.gallery-face:focus-visible img {
+    object-position: 50% 8%;
+    transform: scale(1);
+    transform-origin: center top;
+  }
+  .gallery-card.gallery-face:hover img,
+  .gallery-card.gallery-face:focus-visible img {
+    transform: scale(1.04);
+  }
+}
