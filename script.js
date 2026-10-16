@@ -19,13 +19,13 @@
       const gateHintText = document.getElementById('gateHintText');
       const gateHintLabel = document.querySelector('.gate-hint-label');
       const birthdayHints = [
-        'Tem lembranças esperando para entrar em quadra...',
-        'Uma galeria reúne momentos e fotos especiais.',
-        'Tem uma mensagem feita especialmente para você.',
-        'Seu talento no vôlei também faz parte dessa história.',
-        'Existe um cantinho para guardar palavras e fotos.',
-        'Cada detalhe foi pensado com amizade e carinho.',
-        'A surpresa tem mais do que parabéns: tem boas memórias.'
+        'Tem uma surpresa chegando...',
+        'Algumas coisas ficam melhores quando são compartilhadas.',
+        'Uma data especial merece algo especial.',
+        'Foi preparado tudo com muito carinho.',
+        'A torcida já está se preparando...',
+        'Falta pouco para descobrir.',
+        'O melhor ainda está por vir.'
       ];
       let currentHint = 0;
       const rotateBirthdayHint = () => {
