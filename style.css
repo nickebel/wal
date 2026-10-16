@@ -274,3 +274,51 @@ body.birthday-countdown-lock #birthdayGate .gate-card {
 body.birthday-countdown-lock #birthdayGate[hidden] {
   display: none !important;
 }
+
+
+/* Pequenas pistas que antecipam o conteúdo da homenagem. */
+.gate-hint {
+  width: min(100%, 410px);
+  min-height: 58px;
+  margin: 18px auto 0;
+  padding: 11px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid #ffac3b35;
+  border-radius: 12px;
+  background: #ffac3b0b;
+  text-align: left;
+  animation: hintAppear .45s ease both;
+}
+.gate-hint-label {
+  flex: 0 0 auto;
+  color: var(--orange);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .13em;
+  white-space: nowrap;
+}
+.gate-hint p {
+  margin: 0;
+  color: #dce5e9;
+  font-size: 11px;
+  line-height: 1.55;
+}
+@keyframes hintAppear {
+  from { opacity: .35; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (max-height: 760px) {
+  .gate-card { padding-top: 20px; padding-bottom: 20px; }
+  .gate-mark { width: 38px; height: 38px; margin-bottom: 14px; }
+  .gate-countdown { margin-top: 20px; margin-bottom: 16px; }
+  .gate-date { margin-bottom: 18px; }
+  .gate-hint { min-height: 48px; margin-top: 12px; padding: 8px 12px; }
+}
+@media (max-width: 440px) {
+  .gate-hint { gap: 8px; padding: 10px 11px; }
+  .gate-hint-label { font-size: 7px; }
+  .gate-hint p { font-size: 10px; }
+}
