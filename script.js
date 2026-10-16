@@ -2,7 +2,7 @@
   // A prévia fica disponível com ?preview=1. O link público mostra o contador até segunda-feira.
   const birthdayGate = document.getElementById('birthdayGate');
   const previewMode = new URLSearchParams(window.location.search).get('preview') === '1';
-  const birthdayRelease = new Date('2026-10-19T00:00:00-03:00').getTime();
+  const birthdayRelease = new Date('2026-10-19T07:00:00-03:00').getTime();
   if (birthdayGate) {
     if (previewMode || Date.now() >= birthdayRelease) {
       birthdayGate.hidden = true;
