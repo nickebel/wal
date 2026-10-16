@@ -16,6 +16,35 @@
         seconds: document.getElementById('gateSeconds')
       };
       const padTime = value => String(value).padStart(2, '0');
+      const gateHintText = document.getElementById('gateHintText');
+      const gateHintLabel = document.querySelector('.gate-hint-label');
+      const birthdayHints = [
+        'Tem lembranças esperando para entrar em quadra...',
+        'Uma galeria reúne momentos e fotos especiais.',
+        'Tem uma mensagem feita especialmente para você.',
+        'Seu talento no vôlei também faz parte dessa história.',
+        'Existe um cantinho para guardar palavras e fotos.',
+        'Cada detalhe foi pensado com amizade e carinho.',
+        'A surpresa tem mais do que parabéns: tem boas memórias.'
+      ];
+      let currentHint = 0;
+      const rotateBirthdayHint = () => {
+        if (!gateHintText || !gateHintLabel) return;
+        currentHint = (currentHint + 1) % birthdayHints.length;
+        gateHintText.textContent = birthdayHints[currentHint];
+        gateHintLabel.textContent = 'PISTA #' + (currentHint + 1);
+        const hint = document.querySelector('.gate-hint');
+        if (hint) {
+          hint.style.animation = 'none';
+          void hint.offsetWidth;
+          hint.style.animation = '';
+        }
+      };
+      if (gateHintText && gateHintLabel) {
+        gateHintText.textContent = birthdayHints[0];
+        gateHintLabel.textContent = 'PISTA #1';
+        window.setInterval(rotateBirthdayHint, 6500);
+      }
       const refreshBirthdayCountdown = () => {
         const remaining = birthdayRelease - Date.now();
         if (remaining <= 0) {
