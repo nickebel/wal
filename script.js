@@ -5,8 +5,10 @@
   const birthdayRelease = new Date('2026-10-19T07:00:00-03:00').getTime();
   if (birthdayGate) {
     if (previewMode || Date.now() >= birthdayRelease) {
+      document.body.classList.remove('birthday-countdown-lock');
       birthdayGate.hidden = true;
     } else {
+      document.body.classList.add('birthday-countdown-lock');
       const gateFields = {
         days: document.getElementById('gateDays'),
         hours: document.getElementById('gateHours'),
@@ -17,6 +19,7 @@
       const refreshBirthdayCountdown = () => {
         const remaining = birthdayRelease - Date.now();
         if (remaining <= 0) {
+          document.body.classList.remove('birthday-countdown-lock');
           birthdayGate.hidden = true;
           window.clearInterval(birthdayTimer);
           return;
