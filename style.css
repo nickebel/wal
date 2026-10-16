@@ -203,3 +203,32 @@
   .gate-time-box span { font-size: 6px; }
   .gate-colon { font-size: 14px; }
 }
+
+
+/* Mantém somente a contagem visível até o horário de liberação. */
+html:has(body.birthday-countdown-lock),
+body.birthday-countdown-lock {
+  min-height: 100%;
+  overflow: hidden !important;
+}
+body.birthday-countdown-lock > *:not(#birthdayGate) {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+body.birthday-countdown-lock #birthdayGate {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100vh;
+  overflow: auto;
+  overscroll-behavior: none;
+}
+body.birthday-countdown-lock #birthdayGate .gate-mark {
+  pointer-events: none;
+  cursor: default;
+}
+body.birthday-countdown-lock #birthdayGate[hidden] {
+  display: none !important;
+}
