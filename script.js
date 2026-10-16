@@ -1,4 +1,38 @@
 (() => {
+  // A prévia fica disponível com ?preview=1. O link público mostra o contador até segunda-feira.
+  const birthdayGate = document.getElementById('birthdayGate');
+  const previewMode = new URLSearchParams(window.location.search).get('preview') === '1';
+  const birthdayRelease = new Date('2026-10-19T00:00:00-03:00').getTime();
+  if (birthdayGate) {
+    if (previewMode || Date.now() >= birthdayRelease) {
+      birthdayGate.hidden = true;
+    } else {
+      const gateFields = {
+        days: document.getElementById('gateDays'),
+        hours: document.getElementById('gateHours'),
+        minutes: document.getElementById('gateMinutes'),
+        seconds: document.getElementById('gateSeconds')
+      };
+      const padTime = value => String(value).padStart(2, '0');
+      const refreshBirthdayCountdown = () => {
+        const remaining = birthdayRelease - Date.now();
+        if (remaining <= 0) {
+          birthdayGate.hidden = true;
+          window.clearInterval(birthdayTimer);
+          return;
+        }
+        const totalSeconds = Math.floor(remaining / 1000);
+        gateFields.days.textContent = padTime(Math.floor(totalSeconds / 86400));
+        gateFields.hours.textContent = padTime(Math.floor((totalSeconds % 86400) / 3600));
+        gateFields.minutes.textContent = padTime(Math.floor((totalSeconds % 3600) / 60));
+        gateFields.seconds.textContent = padTime(totalSeconds % 60);
+      };
+      refreshBirthdayCountdown();
+      const birthdayTimer = window.setInterval(refreshBirthdayCountdown, 1000);
+    }
+  }
+
+
   const menuToggle = document.getElementById('menuToggle');
   const mainNav = document.getElementById('mainNav');
   function closeMenu() {
