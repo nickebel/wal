@@ -15,7 +15,7 @@
     <a class="brand" href="#topo" aria-label="Wal — início"><span class="brand-mark">W<span>•</span></span><span class="brand-name">WALDENIR<small>UMA HOMENAGEM</small></span></a>
     <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Abrir menu"><span></span><span></span></button>
     <nav class="main-nav" id="mainNav" aria-label="Navegação principal">
-      <a href="#homenagem">A homenagem</a><a href="#quadra">O atleta</a><a href="#galeria">Memórias</a><a class="nav-cta" href="#mensagem">Uma mensagem <span aria-hidden="true">↗</span></a>
+      <a href="#homenagem">A homenagem</a><a href="#quadra">O atleta</a><a href="#galeria">Memórias</a><a href="#cantinho">Cantinho do Wal</a><a class="nav-cta" href="#mensagem">Uma mensagem <span aria-hidden="true">↗</span></a>
     </nav>
   </header>
   <main>
@@ -25,7 +25,7 @@
         <h1 id="hero-title">O mundo ganha mais um motivo pra <em>comemorar.</em></h1>
         <p class="hero-lead">Feliz aniversário, Wal!</p>
         <p class="hero-text">Uma homenagem para um cara gente boa, que leva talento pra quadra e uma energia boa por onde passa.</p>
-        <div class="hero-actions"><a class="button button-primary" href="#homenagem">Começar a homenagem <span aria-hidden="true">↓</span></a><a class="button button-quiet" href="#galeria">Ver nossas fotos</a></div>
+        <div class="hero-actions"><a class="button button-primary" href="#homenagem">Começar a homenagem <span aria-hidden="true">↓</span></a><a class="button button-quiet" href="#galeria">Ver fotos do Wal</a></div>
         <div class="hero-signature"><span class="signature-line"></span><span>Feito com carinho, para você.</span></div>
       </div>
       <div class="hero-visual">
@@ -56,9 +56,44 @@
         <button class="gallery-card gallery-wide" data-image="assets/wal-descanso.jpg" data-caption="Sol, tranquilidade e o tempo passando devagar." aria-label="Ampliar foto do Wal descansando à beira da água"><img src="assets/wal-descanso.jpg" alt="Wal relaxando em uma espreguiçadeira à beira da água" loading="lazy"><span class="gallery-overlay"><span>04 / SEM PRESSA</span><b>Ver foto ↗</b></span></button>
         <button class="gallery-card" data-image="assets/wal-sorriso.jpg" data-caption="Esse sorriso já diz muita coisa." aria-label="Ampliar selfie do Wal sorrindo na água"><img src="assets/wal-sorriso.jpg" alt="Selfie do Wal sorrindo durante passeio na água" loading="lazy"><span class="gallery-overlay"><span>05 / SORRISO MARCANTE</span><b>Ver foto ↗</b></span></button>
         <button class="gallery-card" data-image="assets/wal-retrato.jpg" data-caption="Só o Wal, do jeito que ele é." aria-label="Ampliar retrato do Wal de óculos escuros"><img src="assets/wal-retrato.jpg" alt="Retrato do Wal usando óculos escuros em um barco" loading="lazy"><span class="gallery-overlay"><span>06 / SEM POSE</span><b>Ver foto ↗</b></span></button>
-        <button class="gallery-card gallery-wide" data-image="assets/wal-barco.jpg" data-caption="Que nunca faltem novos lugares para conhecer." aria-label="Ampliar foto do Wal sentado na lateral do barco"><img src="assets/wal-barco.jpg" alt="Wal sentado em um barco, usando bermuda azul e óculos escuros" loading="lazy"><span class="gallery-overlay"><span>07 / NOVOS HORIZONTES</span><b>Ver foto ↗</b></span></button>
+        <button class="gallery-card gallery-wide gallery-face" data-image="assets/wal-barco.jpg" data-caption="Que nunca faltem novos lugares para conhecer." aria-label="Ampliar foto do Wal sentado na lateral do barco"><img src="assets/wal-barco.jpg" alt="Wal sentado em um barco, usando bermuda azul e óculos escuros" loading="lazy"><span class="gallery-overlay"><span>07 / NOVOS HORIZONTES</span><b>Ver foto ↗</b></span></button>
       </div>
       <p class="gallery-hint"><span aria-hidden="true">＋</span> Toque em uma foto para ver em tamanho maior.</p>
+    </section>
+
+    <section class="wal-corner section-shell" id="cantinho" aria-labelledby="wal-corner-title">
+      <div class="section-index">04 <span>—</span> SEU ESPAÇO PESSOAL</div>
+      <div class="wal-corner-grid">
+        <div class="wal-corner-intro">
+          <p class="eyebrow">CANTINHO DO WAL</p>
+          <h2 id="wal-corner-title">Suas ideias.<br><em>Suas memórias.</em></h2>
+          <p>Um espaço só seu para anotar pensamentos, guardar momentos especiais e reunir fotos que você quiser rever depois.</p>
+          <div class="wal-local-note"><span class="wal-lock" aria-hidden="true">⌑</span><div><strong>Seu cantinho, do seu jeito</strong><span>Os registros ficam salvos neste navegador e neste aparelho. Nada é publicado automaticamente no site.</span></div></div>
+        </div>
+        <div class="wal-editor">
+          <form id="walEntryForm">
+            <label for="walEntryTitle">Dê um nome para este momento <span>(opcional)</span></label>
+            <input id="walEntryTitle" name="title" type="text" maxlength="90" placeholder="Ex.: Um dia para lembrar">
+            <label for="walEntryText">O que você quer guardar?</label>
+            <textarea id="walEntryText" name="text" rows="5" maxlength="5000" placeholder="Escreva aqui seus pensamentos, histórias, planos ou qualquer coisa que queira registrar..."></textarea>
+            <label class="wal-upload" for="walPhotoFiles">
+              <span class="wal-upload-icon" aria-hidden="true">＋</span>
+              <span class="wal-upload-copy"><strong>Adicionar suas fotos</strong><small>Escolha imagens do celular ou computador · até 6 por registro</small></span>
+              <input id="walPhotoFiles" name="photos" type="file" accept="image/*" multiple>
+            </label>
+            <div id="walPhotoPreview" class="wal-photo-preview" aria-live="polite"></div>
+            <div class="wal-editor-actions">
+              <button class="button button-primary" type="submit">Guardar no meu cantinho <span aria-hidden="true">↗</span></button>
+              <button class="button button-quiet wal-clear-button" type="button" id="clearWalEntry">Limpar</button>
+            </div>
+            <p class="wal-form-status" id="walFormStatus" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+      <div class="wal-saved">
+        <div class="wal-saved-heading"><div><p class="eyebrow">SEU BAÚ DE LEMBRANÇAS</p><h3>O que você guardou</h3></div><span id="walEntryCount" class="wal-entry-count">0 registros</span></div>
+        <div id="walEntries" class="wal-entries"><div class="wal-empty"><span aria-hidden="true">✳</span><p>Seu cantinho está esperando a primeira lembrança.</p><small>Escreva uma mensagem ou adicione fotos para começar.</small></div></div>
+      </div>
     </section>
     <section class="message-section" id="mensagem" aria-labelledby="message-title">
       <div class="message-orbit orbit-one" aria-hidden="true"></div><div class="message-orbit orbit-two" aria-hidden="true"></div>
