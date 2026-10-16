@@ -1,16 +1,16 @@
 # Aniversário do Wal 🏐
 
-Site de homenagem de aniversário para Waldenir (Wal), com visual esportivo, galeria de fotos fornecidas, mensagem surpresa e efeitos de comemoração.
+Site de homenagem para Waldenir (Wal), com fotos em JPEG de alta resolução, galeria ampliável, mensagem surpresa e o **Cantinho do Wal**.
 
-## Abrir localmente
+## Cantinho do Wal
 
-Abra o arquivo index.html em um navegador. Os arquivos ficam todos neste repositório, sem dependências externas.
+Wal pode escrever registros e adicionar até seis fotos por lembrança. Os dados são guardados localmente no navegador, usando IndexedDB — não são publicados nem sincronizados entre aparelhos. Limpar os dados do navegador pode apagar esses registros.
 
-## Publicar com GitHub Pages
+## Publicar no GitHub Pages
 
-1. Entre em **Settings → Pages**.
+1. Abra **Settings → Pages**.
 2. Em **Build and deployment**, selecione **Deploy from a branch**.
-3. Selecione a branch **main** e a pasta **/(root)**.
-4. Salve e aguarde a publicação.
+3. Escolha a branch **main** e a pasta **/(root)**.
+4. Salve e aguarde o deploy.
 
 O site é responsivo e funciona em celular e computador.
