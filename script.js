@@ -82,4 +82,267 @@
     }, { threshold: .12 });
     targets.forEach(target => observer.observe(target));
   }
+
+  // Cantinho do Wal — registros e fotos são guardados no navegador, via IndexedDB.
+  const walForm = document.getElementById('walEntryForm');
+  const walTitle = document.getElementById('walEntryTitle');
+  const walText = document.getElementById('walEntryText');
+  const walPhotoInput = document.getElementById('walPhotoFiles');
+  const walPreview = document.getElementById('walPhotoPreview');
+  const walStatus = document.getElementById('walFormStatus');
+  const walEntriesContainer = document.getElementById('walEntries');
+  const walEntryCount = document.getElementById('walEntryCount');
+  const walClearButton = document.getElementById('clearWalEntry');
+  const walMaxPhotos = 6;
+  const walMaxPhotoBytes = 12 * 1024 * 1024;
+  let pendingWalPhotos = [];
+  let pendingWalPreviewUrls = [];
+  let savedWalImageUrls = [];
+  let walDatabasePromise = null;
+
+  function openWalDatabase() {
+    if (walDatabasePromise) return walDatabasePromise;
+    walDatabasePromise = new Promise((resolve, reject) => {
+      if (!('indexedDB' in window)) {
+        reject(new Error('Este navegador não oferece armazenamento local compatível.'));
+        return;
+      }
+      const request = window.indexedDB.open('wal-cantinho-db', 1);
+      request.onupgradeneeded = () => {
+        const database = request.result;
+        if (!database.objectStoreNames.contains('entries')) {
+          database.createObjectStore('entries', { keyPath: 'id' });
+        }
+      };
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error || new Error('Não foi possível abrir o cantinho.'));
+      request.onblocked = () => reject(new Error('Feche outras abas deste site e tente novamente.'));
+    });
+    return walDatabasePromise;
+  }
+
+  function walReadEntries() {
+    return openWalDatabase().then(database => new Promise((resolve, reject) => {
+      const transaction = database.transaction('entries', 'readonly');
+      const request = transaction.objectStore('entries').getAll();
+      request.onsuccess = () => resolve(request.result || []);
+      request.onerror = () => reject(request.error || new Error('Não foi possível ler suas lembranças.'));
+    }));
+  }
+
+  function walWriteEntry(entry) {
+    return openWalDatabase().then(database => new Promise((resolve, reject) => {
+      const transaction = database.transaction('entries', 'readwrite');
+      transaction.objectStore('entries').put(entry);
+      transaction.oncomplete = () => resolve();
+      transaction.onerror = () => reject(transaction.error || new Error('Não foi possível guardar este registro.'));
+      transaction.onabort = () => reject(transaction.error || new Error('O armazenamento foi interrompido.'));
+    }));
+  }
+
+  function walDeleteEntry(id) {
+    return openWalDatabase().then(database => new Promise((resolve, reject) => {
+      const transaction = database.transaction('entries', 'readwrite');
+      transaction.objectStore('entries').delete(id);
+      transaction.oncomplete = () => resolve();
+      transaction.onerror = () => reject(transaction.error || new Error('Não foi possível apagar este registro.'));
+    }));
+  }
+
+  function setWalStatus(message) {
+    if (walStatus) walStatus.textContent = message;
+  }
+
+  function revokeWalPreviewUrls() {
+    pendingWalPreviewUrls.forEach(url => URL.revokeObjectURL(url));
+    pendingWalPreviewUrls = [];
+  }
+
+  function renderWalPreviews() {
+    if (!walPreview) return;
+    revokeWalPreviewUrls();
+    walPreview.replaceChildren();
+    pendingWalPhotos.forEach((file, index) => {
+      const item = document.createElement('div');
+      item.className = 'wal-preview-item';
+      const image = document.createElement('img');
+      const url = URL.createObjectURL(file);
+      pendingWalPreviewUrls.push(url);
+      image.src = url;
+      image.alt = file.name || 'Foto selecionada';
+      image.title = file.name || 'Foto selecionada';
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'wal-preview-remove';
+      remove.textContent = '×';
+      remove.setAttribute('aria-label', 'Remover ' + (file.name || 'foto') + ' das fotos selecionadas');
+      remove.addEventListener('click', () => {
+        pendingWalPhotos.splice(index, 1);
+        renderWalPreviews();
+        setWalStatus('');
+      });
+      item.append(image, remove);
+      walPreview.appendChild(item);
+    });
+  }
+
+  function createWalEmptyState() {
+    const empty = document.createElement('div');
+    empty.className = 'wal-empty';
+    const star = document.createElement('span');
+    star.setAttribute('aria-hidden', 'true');
+    star.textContent = '✳';
+    const title = document.createElement('p');
+    title.textContent = 'Seu cantinho está esperando a primeira lembrança.';
+    const detail = document.createElement('small');
+    detail.textContent = 'Escreva uma mensagem ou adicione fotos para começar.';
+    empty.append(star, title, detail);
+    return empty;
+  }
+
+  async function renderWalEntries() {
+    if (!walEntriesContainer) return;
+    savedWalImageUrls.forEach(url => URL.revokeObjectURL(url));
+    savedWalImageUrls = [];
+    const entries = await walReadEntries();
+    entries.sort((a, b) => b.createdAt - a.createdAt);
+    walEntryCount.textContent = entries.length + (entries.length === 1 ? ' registro' : ' registros');
+    walEntriesContainer.replaceChildren();
+    if (entries.length === 0) {
+      walEntriesContainer.appendChild(createWalEmptyState());
+      return;
+    }
+    entries.forEach(entry => {
+      const card = document.createElement('article');
+      card.className = 'wal-entry-card';
+      const meta = document.createElement('div');
+      meta.className = 'wal-entry-meta';
+      const date = document.createElement('time');
+      date.dateTime = new Date(entry.createdAt).toISOString();
+      date.textContent = new Date(entry.createdAt).toLocaleString('pt-BR', {
+        day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+      });
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'wal-entry-delete';
+      remove.textContent = 'Apagar registro';
+      remove.addEventListener('click', async () => {
+        if (!window.confirm('Apagar esta lembrança deste navegador?')) return;
+        try {
+          await walDeleteEntry(entry.id);
+          setWalStatus('Registro apagado do seu cantinho.');
+          await renderWalEntries();
+        } catch (error) {
+          setWalStatus('Não foi possível apagar agora. Tente novamente.');
+        }
+      });
+      meta.append(date, remove);
+      card.appendChild(meta);
+      const heading = document.createElement('h4');
+      heading.textContent = entry.title || 'Uma lembrança do Wal';
+      card.appendChild(heading);
+      if (entry.text) {
+        const paragraph = document.createElement('p');
+        paragraph.className = 'wal-entry-text';
+        paragraph.textContent = entry.text;
+        card.appendChild(paragraph);
+      }
+      if (entry.photos && entry.photos.length) {
+        const photos = document.createElement('div');
+        photos.className = 'wal-entry-photos';
+        entry.photos.forEach(photo => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.setAttribute('aria-label', 'Ampliar foto ' + (photo.name || 'adicionada ao cantinho'));
+          const image = document.createElement('img');
+          const url = URL.createObjectURL(photo.blob);
+          savedWalImageUrls.push(url);
+          image.src = url;
+          image.alt = photo.name || 'Foto guardada no Cantinho do Wal';
+          image.loading = 'lazy';
+          button.appendChild(image);
+          button.addEventListener('click', () => {
+            lightboxImage.src = url;
+            lightboxImage.alt = image.alt;
+            lightboxCaption.textContent = (entry.title || 'Uma lembrança do Wal') + (photo.name ? ' — ' + photo.name : '');
+            if (typeof lightbox.showModal === 'function') lightbox.showModal();
+            else lightbox.setAttribute('open', '');
+          });
+          photos.appendChild(button);
+        });
+        card.appendChild(photos);
+      }
+      walEntriesContainer.appendChild(card);
+    });
+  }
+
+  if (walForm && walPhotoInput && walPreview && walStatus) {
+    walPhotoInput.addEventListener('change', () => {
+      const chosen = Array.from(walPhotoInput.files || []);
+      const accepted = [];
+      let rejectedType = false;
+      let rejectedSize = false;
+      chosen.forEach(file => {
+        if (!file.type.startsWith('image/')) { rejectedType = true; return; }
+        if (file.size > walMaxPhotoBytes) { rejectedSize = true; return; }
+        if (pendingWalPhotos.length + accepted.length >= walMaxPhotos) return;
+        accepted.push(file);
+      });
+      pendingWalPhotos = pendingWalPhotos.concat(accepted);
+      renderWalPreviews();
+      const messages = [];
+      if (accepted.length) messages.push(accepted.length + (accepted.length === 1 ? ' foto adicionada à seleção.' : ' fotos adicionadas à seleção.'));
+      if (rejectedType) messages.push('Alguns arquivos não eram imagens e foram ignorados.');
+      if (rejectedSize) messages.push('Cada foto precisa ter no máximo 12 MB.');
+      if (pendingWalPhotos.length >= walMaxPhotos && chosen.length > accepted.length) messages.push('Cada registro permite até 6 fotos.');
+      setWalStatus(messages.join(' '));
+      walPhotoInput.value = '';
+    });
+
+    walClearButton.addEventListener('click', () => {
+      walForm.reset();
+      pendingWalPhotos = [];
+      renderWalPreviews();
+      setWalStatus('');
+    });
+
+    walForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const title = walTitle.value.trim();
+      const text = walText.value.trim();
+      if (!text && pendingWalPhotos.length === 0) {
+        setWalStatus('Escreva alguma coisa ou adicione pelo menos uma foto.');
+        return;
+      }
+      const saveButton = walForm.querySelector('button[type="submit"]');
+      saveButton.disabled = true;
+      saveButton.style.opacity = '.7';
+      setWalStatus('Guardando sua lembrança...');
+      const entry = {
+        id: Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 9),
+        title: title,
+        text: text,
+        createdAt: Date.now(),
+        photos: pendingWalPhotos.map(file => ({ name: file.name, type: file.type, blob: file }))
+      };
+      try {
+        await walWriteEntry(entry);
+        walForm.reset();
+        pendingWalPhotos = [];
+        renderWalPreviews();
+        await renderWalEntries();
+        setWalStatus('Pronto! Sua lembrança ficou guardada neste navegador.');
+      } catch (error) {
+        setWalStatus('Não consegui guardar. O navegador pode estar sem espaço disponível; tente usar menos fotos.');
+      } finally {
+        saveButton.disabled = false;
+        saveButton.style.opacity = '';
+      }
+    });
+
+    renderWalEntries().catch(() => {
+      setWalStatus('O armazenamento deste navegador não está disponível. Tente abrir o site em outro navegador atualizado.');
+    });
+  }
+
 })();
