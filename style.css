@@ -232,3 +232,45 @@ body.birthday-countdown-lock #birthdayGate .gate-mark {
 body.birthday-countdown-lock #birthdayGate[hidden] {
   display: none !important;
 }
+
+
+/* Bloqueio real da tela durante a contagem: não permite arrastar ou rolar a página. */
+html:has(body.birthday-countdown-lock),
+body.birthday-countdown-lock {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+body.birthday-countdown-lock #birthdayGate {
+  position: fixed !important;
+  inset: 0 !important;
+  display: grid;
+  place-items: center;
+  width: 100% !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  max-height: 100dvh !important;
+  margin: 0 !important;
+  padding: clamp(12px, 3vw, 24px) !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+  z-index: 2147483647 !important;
+}
+body.birthday-countdown-lock #birthdayGate .gate-card {
+  width: min(100%, 720px) !important;
+  max-width: 720px !important;
+  max-height: 100% !important;
+  margin: auto !important;
+  overflow: hidden !important;
+  touch-action: none !important;
+}
+body.birthday-countdown-lock #birthdayGate[hidden] {
+  display: none !important;
+}
