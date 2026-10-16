@@ -1,1 +1,12 @@
-As fotos do site devem ficar nesta pasta com os nomes wal-volei.webp, wal-sol.webp, wal-natureza.webp, wal-elegante.webp, wal-descanso.webp, wal-sorriso.webp, wal-retrato.webp e wal-barco.webp. Elas estão na pasta assets do arquivo ZIP do projeto.
+Envie para esta pasta as oito fotos JPEG de alta resolução do pacote do site, com estes nomes exatos:
+
+- wal-volei.jpg
+- wal-sol.jpg
+- wal-natureza.jpg
+- wal-descanso.jpg
+- wal-elegante.jpg
+- wal-sorriso.jpg
+- wal-retrato.jpg
+- wal-barco.jpg
+
+Use as versões .jpg em 1080 px (não as versões .webp reduzidas do pacote leve). O HTML e a galeria ampliada já apontam para esses nomes.
