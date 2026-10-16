@@ -131,3 +131,25 @@
     transform: scale(1.04);
   }
 }
+
+
+/* Mobile: dá mais altura à foto 07 e enquadra o rosto sem cortar a cabeça. */
+@media (max-width: 720px) {
+  .gallery-card.gallery-face {
+    grid-column: 1 / -1;
+    grid-row: span 2;
+    min-height: 400px;
+  }
+  .gallery-card.gallery-face img,
+  .gallery-card.gallery-face:hover img,
+  .gallery-card.gallery-face:focus-visible img {
+    object-fit: cover;
+    object-position: 58% 16%;
+    transform: scale(1);
+    transform-origin: center top;
+  }
+  .gallery-card.gallery-face:hover img,
+  .gallery-card.gallery-face:focus-visible img {
+    transform: scale(1.03);
+  }
+}
