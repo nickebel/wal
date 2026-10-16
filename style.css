@@ -73,3 +73,34 @@
 .gallery-card.gallery-face:hover img,.gallery-card.gallery-face:focus-visible img{transform:scale(1.25)}
 @media(max-width:1000px){.wal-corner-grid{gap:35px;grid-template-columns:minmax(0,.8fr) minmax(0,1fr)}.wal-entries{grid-template-columns:1fr}}
 @media(max-width:720px){.wal-corner{padding-top:75px;padding-bottom:74px}.wal-corner-grid{grid-template-columns:1fr;gap:30px}.wal-corner-intro h2{font-size:clamp(43px,11vw,58px)}.wal-local-note{margin-top:25px}.wal-editor{padding:20px}.wal-photo-preview{grid-template-columns:repeat(4,minmax(0,1fr))}.wal-saved{margin-top:52px}.wal-saved-heading{align-items:start}.wal-entries{grid-template-columns:1fr}.gallery-card.gallery-face img{object-position:50% 59%;transform:scale(1.18)}}
+
+
+/* Tela de contagem regressiva — visível no link público até o aniversário */
+.birthday-gate{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;overflow:auto;padding:30px 20px;background:radial-gradient(ellipse at 18% 5%,#17455a 0,transparent 42%),radial-gradient(ellipse at 90% 95%,#203b45 0,transparent 35%),#061521;color:#fffef9}
+.birthday-gate[hidden]{display:none}
+.gate-card{position:relative;z-index:2;width:min(100%,720px);padding:clamp(25px,5.2vw,60px);text-align:center;border:1px solid #ffffff20;border-radius:25px;background:linear-gradient(150deg,#102b3ce8,#081b29f2);box-shadow:0 30px 110px #0007;backdrop-filter:blur(10px)}
+.gate-mark{display:grid;place-items:center;width:48px;height:48px;margin:0 auto 29px;border:1px solid #ffac3b9c;border-radius:50%;color:var(--orange);font-size:22px;font-weight:950;letter-spacing:-2px}
+.gate-mark span{color:#fffef9}
+.gate-eyebrow{display:flex;justify-content:center;align-items:center;gap:9px;color:var(--orange);font-size:9px;font-weight:850;letter-spacing:.22em;margin:0 0 17px}
+.gate-eyebrow span{width:6px;height:6px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 5px #ffac3b1b}
+.gate-pretitle{font-size:9px;font-weight:850;letter-spacing:.27em;color:#a8bcc6;margin:0 0 15px}
+.gate-card h1{font-size:clamp(44px,8vw,78px);line-height:1.02;letter-spacing:-.06em;margin:0 0 20px}
+.gate-card h1 em{color:var(--orange);font-family:Georgia,"Times New Roman",serif;font-weight:400}
+.gate-message{max-width:450px;margin:0 auto;color:#b7c6cd;font-size:13px;line-height:1.9}
+.gate-countdown{display:flex;align-items:center;justify-content:center;gap:clamp(6px,2vw,18px);margin:35px auto 25px}
+.gate-time-box{width:clamp(58px,14vw,100px);height:clamp(73px,15vw,108px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:1px solid #ffffff1c;border-radius:14px;background:#ffffff08}
+.gate-time-box strong{font-size:clamp(25px,5.8vw,44px);line-height:1;font-weight:800;letter-spacing:-.05em;font-variant-numeric:tabular-nums;color:#fffef9}
+.gate-time-box span{font-size:8px;font-weight:850;letter-spacing:.15em;color:var(--orange)}
+.gate-colon{font-size:27px;font-weight:300;color:#ffac3b9c;margin-top:-14px}
+.gate-progress-track{height:3px;width:min(100%,360px);margin:0 auto 23px;border-radius:999px;background:#ffffff16;overflow:hidden}
+.gate-progress-track span{display:block;width:100%;height:100%;background:linear-gradient(90deg,var(--orange),var(--yellow));transform-origin:left;animation:gatePulse 2.4s ease-in-out infinite alternate}
+@keyframes gatePulse{from{opacity:.65;transform:scaleX(.65)}to{opacity:1;transform:scaleX(1)}}
+.gate-date{font-size:10px;font-weight:850;letter-spacing:.16em;color:#f1d4a4;margin:0 0 33px}
+.gate-date span{color:var(--orange);margin-right:8px}
+.gate-footer{display:flex;justify-content:space-between;gap:15px;padding-top:20px;border-top:1px solid #ffffff1b;color:#77909e;font-size:8px;font-weight:850;letter-spacing:.16em}
+.gate-footer b{color:var(--orange)}
+.gate-background-ball{position:absolute;border:1px solid #ffac3b1a;border-radius:50%;pointer-events:none}
+.gate-ball-one{width:410px;height:410px;left:-260px;bottom:-140px}
+.gate-ball-two{width:560px;height:560px;right:-365px;top:-300px}
+@media(max-width:440px){.birthday-gate{padding:15px}.gate-card{padding:25px 17px;border-radius:19px}.gate-mark{margin-bottom:22px}.gate-countdown{gap:5px;margin-top:29px}.gate-time-box{width:clamp(57px,16vw,70px);height:78px;border-radius:10px}.gate-time-box span{font-size:7px;letter-spacing:.1em}.gate-colon{font-size:20px}.gate-date{font-size:8px;letter-spacing:.11em}.gate-footer{font-size:7px;letter-spacing:.1em}}
+@media(prefers-reduced-motion:reduce){.gate-progress-track span{animation:none}}
